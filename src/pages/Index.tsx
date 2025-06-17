@@ -94,24 +94,53 @@ const Index = () => {
     setChatMessages([]);
   };
 
+  if (!hasSearched) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        {/* Header */}
+        <div className="flex justify-end p-4">
+          <LanguageToggle />
+        </div>
+
+        {/* Main Content - Centered */}
+        <div className="flex-1 flex flex-col items-center justify-center px-4 pb-32">
+          <div className="w-full max-w-2xl text-center">
+            {/* Logo/Title */}
+            <h1 className="text-4xl font-light text-gray-800 mb-12 tracking-wide">
+              {direction === 'rtl' ? 'بيربلكسيتي' : 'perplexity'}
+            </h1>
+
+            {/* Search Bar */}
+            <div className="w-full">
+              <SearchBar onSearch={handleSearch} isLoading={isSearchLoading} />
+            </div>
+
+            {/* Suggested Actions */}
+            <div className="mt-8 text-sm text-gray-500">
+              {direction === 'rtl' ? 'اسأل أي شيء...' : 'Ask anything...'}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              {direction === 'rtl' ? 'محرك البحث الذكي' : 'Smart Search Engine'}
+            <h1 className="text-xl font-light text-gray-800 tracking-wide">
+              {direction === 'rtl' ? 'بيربلكسيتي' : 'perplexity'}
             </h1>
           </div>
           <LanguageToggle />
         </div>
 
-        {/* Hero Search */}
-        <div className="text-center mb-12">
-          <div className="mb-8">
-            <SearchBar onSearch={handleSearch} isLoading={isSearchLoading} />
-          </div>
+        {/* Compact Search Bar */}
+        <div className="mb-8">
+          <SearchBar onSearch={handleSearch} isLoading={isSearchLoading} />
         </div>
 
         {/* Main Content */}
