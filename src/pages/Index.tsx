@@ -150,12 +150,7 @@ const Index = () => {
       <div className="flex-1">
         <div className="container mx-auto px-4 py-6">
           {/* Header */}
-          <div className={`flex ${direction === 'rtl' ? 'flex-row-reverse' : ''} justify-between items-center mb-8`}>
-            <div className="flex items-center gap-4">
-              <h1 className="forbes-heading text-2xl font-semibold text-gray-900 tracking-tight">
-                {direction === 'rtl' ? 'فوربس الشرق الأوسط' : 'Forbes Middle East'}
-              </h1>
-            </div>
+          <div className={`flex ${direction === 'rtl' ? 'justify-end' : 'justify-end'} items-center mb-8`}>
             <LanguageToggle />
           </div>
 
