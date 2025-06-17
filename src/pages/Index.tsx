@@ -5,6 +5,7 @@ import LanguageToggle from '@/components/LanguageToggle';
 import SearchBar from '@/components/SearchBar';
 import SearchResults, { SearchResult } from '@/components/SearchResults';
 import ChatInterface, { ChatMessage } from '@/components/ChatInterface';
+import NavigationSidebar from '@/components/NavigationSidebar';
 
 const Index = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -12,6 +13,7 @@ const Index = () => {
   const [isSearchLoading, setIsSearchLoading] = useState(false);
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [activeTab, setActiveTab] = useState<'search' | 'chat' | 'explore'>('search');
   const { direction } = useLanguage();
 
   // Mock search function - replace with actual API call
@@ -96,28 +98,37 @@ const Index = () => {
 
   if (!hasSearched) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col">
-        {/* Header */}
-        <div className="flex justify-end p-4">
-          <LanguageToggle />
-        </div>
+      <div className="min-h-screen bg-gray-50 flex">
+        {/* Navigation Sidebar */}
+        <NavigationSidebar 
+          activeTab={activeTab} 
+          onTabChange={setActiveTab}
+        />
 
-        {/* Main Content - Centered */}
-        <div className="flex-1 flex flex-col items-center justify-center px-4 pb-32">
-          <div className="w-full max-w-2xl text-center">
-            {/* Logo/Title */}
-            <h1 className="text-4xl font-light text-gray-800 mb-12 tracking-wide">
-              {direction === 'rtl' ? 'بيربلكسيتي' : 'perplexity'}
-            </h1>
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col">
+          {/* Header */}
+          <div className={`flex ${direction === 'rtl' ? 'justify-start' : 'justify-end'} p-4`}>
+            <LanguageToggle />
+          </div>
 
-            {/* Search Bar */}
-            <div className="w-full">
-              <SearchBar onSearch={handleSearch} isLoading={isSearchLoading} />
-            </div>
+          {/* Centered Content */}
+          <div className="flex-1 flex flex-col items-center justify-center px-4 pb-32">
+            <div className="w-full max-w-2xl text-center">
+              {/* Logo/Title */}
+              <h1 className="text-4xl font-light text-gray-800 mb-12 tracking-wide">
+                {direction === 'rtl' ? 'بيربلكسيتي' : 'perplexity'}
+              </h1>
 
-            {/* Suggested Actions */}
-            <div className="mt-8 text-sm text-gray-500">
-              {direction === 'rtl' ? 'اسأل أي شيء...' : 'Ask anything...'}
+              {/* Search Bar */}
+              <div className="w-full">
+                <SearchBar onSearch={handleSearch} isLoading={isSearchLoading} />
+              </div>
+
+              {/* Suggested Actions */}
+              <div className="mt-8 text-sm text-gray-500">
+                {direction === 'rtl' ? 'اسأل أي شيء...' : 'Ask anything...'}
+              </div>
             </div>
           </div>
         </div>
@@ -126,39 +137,75 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-6">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-4">
-            <h1 className="text-xl font-light text-gray-800 tracking-wide">
-              {direction === 'rtl' ? 'بيربلكسيتي' : 'perplexity'}
-            </h1>
-          </div>
-          <LanguageToggle />
-        </div>
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Navigation Sidebar */}
+      <NavigationSidebar 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab}
+      />
 
-        {/* Compact Search Bar */}
-        <div className="mb-8">
-          <SearchBar onSearch={handleSearch} isLoading={isSearchLoading} />
-        </div>
-
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Search Results */}
-          <div className="space-y-6">
-            <SearchResults results={searchResults} isLoading={isSearchLoading} />
+      {/* Main Content */}
+      <div className="flex-1">
+        <div className="container mx-auto px-4 py-6">
+          {/* Header */}
+          <div className={`flex ${direction === 'rtl' ? 'flex-row-reverse' : ''} justify-between items-center mb-8`}>
+            <div className="flex items-center gap-4">
+              <h1 className="text-xl font-light text-gray-800 tracking-wide">
+                {direction === 'rtl' ? 'بيربلكسيتي' : 'perplexity'}
+              </h1>
+            </div>
+            <LanguageToggle />
           </div>
 
-          {/* Chat Interface */}
-          <div className="lg:sticky lg:top-6 h-[600px]">
-            <ChatInterface
-              messages={chatMessages}
-              onSendMessage={handleSendMessage}
-              onClearChat={handleClearChat}
-              isLoading={isChatLoading}
-            />
+          {/* Compact Search Bar */}
+          <div className="mb-8">
+            <SearchBar onSearch={handleSearch} isLoading={isSearchLoading} />
           </div>
+
+          {/* Content based on active tab */}
+          {activeTab === 'search' && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Search Results */}
+              <div className="space-y-6">
+                <SearchResults results={searchResults} isLoading={isSearchLoading} />
+              </div>
+
+              {/* Chat Interface */}
+              <div className="lg:sticky lg:top-6 h-[600px]">
+                <ChatInterface
+                  messages={chatMessages}
+                  onSendMessage={handleSendMessage}
+                  onClearChat={handleClearChat}
+                  isLoading={isChatLoading}
+                />
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'chat' && (
+            <div className="max-w-4xl mx-auto">
+              <ChatInterface
+                messages={chatMessages}
+                onSendMessage={handleSendMessage}
+                onClearChat={handleClearChat}
+                isLoading={isChatLoading}
+              />
+            </div>
+          )}
+
+          {activeTab === 'explore' && (
+            <div className="text-center py-12">
+              <h2 className="text-2xl font-light text-gray-600 mb-4">
+                {direction === 'rtl' ? 'استكشف' : 'Explore'}
+              </h2>
+              <p className="text-gray-500">
+                {direction === 'rtl' 
+                  ? 'اكتشف مواضيع جديدة ومثيرة للاهتمام'
+                  : 'Discover new and interesting topics'
+                }
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
