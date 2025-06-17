@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
@@ -116,9 +115,12 @@ const Index = () => {
           <div className="flex-1 flex flex-col items-center justify-center px-4 pb-32">
             <div className="w-full max-w-2xl text-center">
               {/* Logo/Title */}
-              <h1 className="text-4xl font-light text-gray-800 mb-12 tracking-wide">
-                {direction === 'rtl' ? 'بيربلكسيتي' : 'perplexity'}
+              <h1 className="forbes-heading text-5xl font-bold text-gray-900 mb-3 tracking-tight">
+                {direction === 'rtl' ? 'فوربس الشرق الأوسط' : 'Forbes Middle East'}
               </h1>
+              <p className="forbes-text text-lg text-gray-600 mb-12 font-light">
+                {direction === 'rtl' ? 'محرك البحث الذكي' : 'Intelligent Search Engine'}
+              </p>
 
               {/* Search Bar */}
               <div className="w-full">
@@ -126,7 +128,7 @@ const Index = () => {
               </div>
 
               {/* Suggested Actions */}
-              <div className="mt-8 text-sm text-gray-500">
+              <div className="mt-8 text-sm text-gray-500 forbes-text">
                 {direction === 'rtl' ? 'اسأل أي شيء...' : 'Ask anything...'}
               </div>
             </div>
@@ -150,8 +152,8 @@ const Index = () => {
           {/* Header */}
           <div className={`flex ${direction === 'rtl' ? 'flex-row-reverse' : ''} justify-between items-center mb-8`}>
             <div className="flex items-center gap-4">
-              <h1 className="text-xl font-light text-gray-800 tracking-wide">
-                {direction === 'rtl' ? 'بيربلكسيتي' : 'perplexity'}
+              <h1 className="forbes-heading text-2xl font-semibold text-gray-900 tracking-tight">
+                {direction === 'rtl' ? 'فوربس الشرق الأوسط' : 'Forbes Middle East'}
               </h1>
             </div>
             <LanguageToggle />
@@ -195,10 +197,10 @@ const Index = () => {
 
           {activeTab === 'explore' && (
             <div className="text-center py-12">
-              <h2 className="text-2xl font-light text-gray-600 mb-4">
+              <h2 className="forbes-heading text-3xl font-semibold text-gray-800 mb-4">
                 {direction === 'rtl' ? 'استكشف' : 'Explore'}
               </h2>
-              <p className="text-gray-500">
+              <p className="forbes-text text-gray-600 text-lg">
                 {direction === 'rtl' 
                   ? 'اكتشف مواضيع جديدة ومثيرة للاهتمام'
                   : 'Discover new and interesting topics'
