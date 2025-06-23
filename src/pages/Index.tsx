@@ -5,7 +5,8 @@ import SearchBar from '@/components/SearchBar';
 import SearchResults, { SearchResult } from '@/components/SearchResults';
 import ChatInterface, { ChatMessage } from '@/components/ChatInterface';
 import NavigationSidebar from '@/components/NavigationSidebar';
-import EnhancedChatInterface, { EnhancedChatMessage, CitationData } from '@/components/EnhancedChatInterface';
+import EnhancedChatInterface, { EnhancedChatMessage } from '@/components/EnhancedChatInterface';
+import { CitationData } from '@/components/Citation';
 
 const Index = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
