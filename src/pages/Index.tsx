@@ -5,10 +5,11 @@ import SearchBar from '@/components/SearchBar';
 import SearchResults, { SearchResult } from '@/components/SearchResults';
 import ChatInterface, { ChatMessage } from '@/components/ChatInterface';
 import NavigationSidebar from '@/components/NavigationSidebar';
+import EnhancedChatInterface, { EnhancedChatMessage, CitationData } from '@/components/EnhancedChatInterface';
 
 const Index = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [chatMessages, setChatMessages] = useState<EnhancedChatMessage[]>([]);
   const [isSearchLoading, setIsSearchLoading] = useState(false);
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
@@ -65,7 +66,7 @@ const Index = () => {
   };
 
   const handleSendMessage = async (message: string) => {
-    const userMessage: ChatMessage = {
+    const userMessage: EnhancedChatMessage = {
       id: Date.now().toString(),
       role: 'user',
       content: message,
@@ -75,20 +76,55 @@ const Index = () => {
     setChatMessages(prev => [...prev, userMessage]);
     setIsChatLoading(true);
     
-    // Simulate AI response delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Simulate API call to Forbes data endpoint
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
-    const aiResponse: ChatMessage = {
+    // Mock streaming response with citations
+    const mockCitations: CitationData[] = [
+      {
+        id: '1',
+        title: direction === 'rtl' 
+          ? 'الإمارات تقود الاستثمار في الذكاء الاصطناعي بالمنطقة'
+          : 'UAE Leads AI Investment in the Region',
+        url: 'https://example.com/uae-ai-leadership',
+        summary: direction === 'rtl'
+          ? 'تقرير شامل حول استراتيجية الإمارات في الذكاء الاصطناعي وخططها المستقبلية للاستثمار في هذا المجال'
+          : 'Comprehensive report on UAE\'s AI strategy and future investment plans in the field',
+        source: 'Forbes Middle East'
+      },
+      {
+        id: '2',
+        title: direction === 'rtl'
+          ? 'صندوق محمد بن راشد للابتكار يخصص مليار درهم للذكاء الاصطناعي'
+          : 'Mohammed bin Rashid Innovation Fund Allocates AED 1 Billion for AI',
+        url: 'https://example.com/innovation-fund-ai',
+        summary: direction === 'rtl'
+          ? 'إعلان صندوق محمد بن راشد للابتكار عن تخصيص استثمارات ضخمة لدعم الشركات الناشئة في مجال الذكاء الاصطناعي'
+          : 'Announcement of massive investments by the Mohammed bin Rashid Innovation Fund to support AI startups',
+        source: 'Forbes Middle East'
+      }
+    ];
+    
+    const aiResponse: EnhancedChatMessage = {
       id: (Date.now() + 1).toString(),
       role: 'assistant',
       content: direction === 'rtl'
-        ? 'شكراً لسؤالك! هذا مثال على رد الذكاء الاصطناعي. في التطبيق الحقيقي، ستتم معالجة استفسارك وتقديم إجابة مفصلة ومفيدة بناءً على المعلومات المتاحة.'
-        : 'Thank you for your question! This is an example AI response. In a real application, your query would be processed and a detailed, helpful answer would be provided based on available information.',
-      timestamp: new Date()
+        ? 'وفقاً لتقارير فوربس الشرق الأوسط الحديثة، تشهد دولة الإمارات العربية المتحدة نمواً متسارعاً في استثمارات الذكاء الاصطناعي [1]. تهدف الحكومة الإماراتية إلى استثمار مبلغ 100 مليار درهم في قطاع الذكاء الاصطناعي بحلول عام 2031، مما يجعلها رائدة في هذا المجال على مستوى المنطقة [2]. هذه الاستثمارات تشمل تطوير البنية التحتية، دعم الشركات الناشئة، والبحث والتطوير.'
+        : 'According to recent Forbes Middle East reports, the UAE is experiencing rapid growth in AI investments [1]. The UAE government aims to invest AED 100 billion in the AI sector by 2031, making it a regional leader in this field [2]. These investments include infrastructure development, startup support, and research & development.',
+      citations: mockCitations,
+      timestamp: new Date(),
+      isStreaming: true
     };
     
     setChatMessages(prev => [...prev, aiResponse]);
     setIsChatLoading(false);
+    
+    // Simulate streaming completion
+    setTimeout(() => {
+      setChatMessages(prev => prev.map(msg => 
+        msg.id === aiResponse.id ? { ...msg, isStreaming: false } : msg
+      ));
+    }, 2000);
   };
 
   const handleClearChat = () => {
@@ -167,9 +203,9 @@ const Index = () => {
                 <SearchResults results={searchResults} isLoading={isSearchLoading} />
               </div>
 
-              {/* Chat Interface */}
-              <div className="lg:sticky lg:top-6 h-[600px]">
-                <ChatInterface
+              {/* Enhanced Chat Interface */}
+              <div className="lg:sticky lg:top-6 h-[700px]">
+                <EnhancedChatInterface
                   messages={chatMessages}
                   onSendMessage={handleSendMessage}
                   onClearChat={handleClearChat}
@@ -180,8 +216,8 @@ const Index = () => {
           )}
 
           {activeTab === 'chat' && (
-            <div className="max-w-4xl mx-auto">
-              <ChatInterface
+            <div className="max-w-5xl mx-auto">
+              <EnhancedChatInterface
                 messages={chatMessages}
                 onSendMessage={handleSendMessage}
                 onClearChat={handleClearChat}
