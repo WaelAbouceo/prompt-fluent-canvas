@@ -30,17 +30,20 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ activeTab, onTabC
   ];
 
   return (
-    <div className={`w-64 bg-white border-${direction === 'rtl' ? 'r' : 'l'} border-gray-200 flex flex-col shadow-sm`}>
+    <div className={`w-72 bg-white border-${direction === 'rtl' ? 'r' : 'l'} border-gray-200 flex flex-col shadow-sm`}>
       {/* Header */}
-      <div className="p-6 border-b border-gray-100">
-        <h2 className="forbes-heading text-xl font-semibold text-gray-900">
-          {direction === 'rtl' ? 'فوربس الشرق الأوسط' : 'Forbes Middle East'}
+      <div className="p-8 border-b border-gray-100">
+        <h2 className="forbes-heading text-2xl font-bold text-gray-900 mb-1">
+          {direction === 'rtl' ? 'فوربس' : 'Forbes'}
         </h2>
+        <p className="forbes-text text-sm text-gray-600 font-light">
+          {direction === 'rtl' ? 'الشرق الأوسط' : 'Middle East'}
+        </p>
       </div>
       
       {/* Navigation */}
-      <div className="p-4">
-        <nav className="space-y-1">
+      <div className="p-6">
+        <nav className="space-y-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -49,17 +52,17 @@ const NavigationSidebar: React.FC<NavigationSidebarProps> = ({ activeTab, onTabC
                 key={item.id}
                 onClick={() => onTabChange(item.id)}
                 className={`
-                  w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-200
-                  forbes-nav-item
+                  w-full flex items-center gap-4 px-6 py-4 text-base font-medium transition-all duration-300 rounded-xl
+                  ${direction === 'rtl' ? 'flex-row-reverse text-right' : ''}
                   ${isActive 
-                    ? 'forbes-nav-item active bg-amber-50 text-amber-700 border-l-3 border-amber-600' 
-                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900 border-l-3 border-transparent hover:border-amber-400'
+                    ? 'bg-gradient-to-r from-amber-50 to-amber-100 text-amber-800 shadow-sm border-l-4 border-amber-500' 
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm'
                   }
-                  ${direction === 'rtl' ? 'flex-row-reverse border-r-3 border-l-0' : ''}
+                  ${direction === 'rtl' ? 'border-r-4 border-l-0' : ''}
                 `}
               >
-                <Icon className={`h-5 w-5 ${isActive ? 'text-amber-600' : 'text-gray-500'}`} />
-                <span className="forbes-text">{item.label}</span>
+                <Icon className={`h-5 w-5 ${isActive ? 'text-amber-600' : 'text-gray-500'} transition-colors`} />
+                <span className="forbes-text font-medium">{item.label}</span>
               </button>
             );
           })}

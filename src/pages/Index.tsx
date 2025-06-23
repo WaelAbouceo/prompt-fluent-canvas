@@ -1,12 +1,13 @@
+
 import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
 import SearchBar from '@/components/SearchBar';
 import SearchResults, { SearchResult } from '@/components/SearchResults';
-import ChatInterface, { ChatMessage } from '@/components/ChatInterface';
 import NavigationSidebar from '@/components/NavigationSidebar';
 import EnhancedChatInterface, { EnhancedChatMessage } from '@/components/EnhancedChatInterface';
 import { CitationData } from '@/components/Citation';
+import ExploreSection from '@/components/ExploreSection';
 
 const Index = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -132,49 +133,6 @@ const Index = () => {
     setChatMessages([]);
   };
 
-  if (!hasSearched) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex">
-        {/* Navigation Sidebar */}
-        <NavigationSidebar 
-          activeTab={activeTab} 
-          onTabChange={setActiveTab}
-        />
-
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col">
-          {/* Header */}
-          <div className={`flex ${direction === 'rtl' ? 'justify-start' : 'justify-end'} p-4`}>
-            <LanguageToggle />
-          </div>
-
-          {/* Centered Content */}
-          <div className="flex-1 flex flex-col items-center justify-center px-4 pb-32">
-            <div className="w-full max-w-2xl text-center">
-              {/* Logo/Title */}
-              <h1 className="forbes-heading text-5xl font-bold text-gray-900 mb-3 tracking-tight">
-                {direction === 'rtl' ? 'فوربس الشرق الأوسط' : 'Forbes Middle East'}
-              </h1>
-              <p className="forbes-text text-lg text-gray-600 mb-12 font-light">
-                {direction === 'rtl' ? 'محرك البحث الذكي' : 'Intelligent Search Engine'}
-              </p>
-
-              {/* Search Bar */}
-              <div className="w-full">
-                <SearchBar onSearch={handleSearch} isLoading={isSearchLoading} />
-              </div>
-
-              {/* Suggested Actions */}
-              <div className="mt-8 text-sm text-gray-500 forbes-text">
-                {direction === 'rtl' ? 'اسأل أي شيء...' : 'Ask anything...'}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Navigation Sidebar */}
@@ -184,20 +142,44 @@ const Index = () => {
       />
 
       {/* Main Content */}
-      <div className="flex-1">
-        <div className="container mx-auto px-4 py-6">
-          {/* Header */}
-          <div className={`flex ${direction === 'rtl' ? 'justify-end' : 'justify-end'} items-center mb-8`}>
-            <LanguageToggle />
-          </div>
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className={`flex ${direction === 'rtl' ? 'justify-start' : 'justify-end'} p-6`}>
+          <LanguageToggle />
+        </div>
 
-          {/* Compact Search Bar */}
-          <div className="mb-8">
-            <SearchBar onSearch={handleSearch} isLoading={isSearchLoading} />
-          </div>
+        {/* Content based on active tab */}
+        {activeTab === 'search' && !hasSearched && (
+          <div className="flex-1 flex flex-col items-center justify-center px-6 pb-32">
+            <div className="w-full max-w-2xl text-center">
+              {/* Logo/Title */}
+              <h1 className="forbes-heading text-6xl font-bold text-gray-900 mb-4 tracking-tight">
+                {direction === 'rtl' ? 'فوربس الشرق الأوسط' : 'Forbes Middle East'}
+              </h1>
+              <p className="forbes-text text-xl text-gray-600 mb-16 font-light">
+                {direction === 'rtl' ? 'محرك البحث الذكي' : 'Intelligent Search Engine'}
+              </p>
 
-          {/* Content based on active tab */}
-          {activeTab === 'search' && (
+              {/* Search Bar */}
+              <div className="w-full mb-8">
+                <SearchBar onSearch={handleSearch} isLoading={isSearchLoading} />
+              </div>
+
+              {/* Suggested Actions */}
+              <div className="text-base text-gray-500 forbes-text">
+                {direction === 'rtl' ? 'اسأل أي شيء...' : 'Ask anything...'}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'search' && hasSearched && (
+          <div className="flex-1 px-6">
+            {/* Compact Search Bar */}
+            <div className="mb-8">
+              <SearchBar onSearch={handleSearch} isLoading={isSearchLoading} />
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Search Results */}
               <div className="space-y-6">
@@ -214,9 +196,11 @@ const Index = () => {
                 />
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {activeTab === 'chat' && (
+        {activeTab === 'chat' && (
+          <div className="flex-1 px-6">
             <div className="max-w-5xl mx-auto">
               <EnhancedChatInterface
                 messages={chatMessages}
@@ -225,22 +209,14 @@ const Index = () => {
                 isLoading={isChatLoading}
               />
             </div>
-          )}
+          </div>
+        )}
 
-          {activeTab === 'explore' && (
-            <div className="text-center py-12">
-              <h2 className="forbes-heading text-3xl font-semibold text-gray-800 mb-4">
-                {direction === 'rtl' ? 'استكشف' : 'Explore'}
-              </h2>
-              <p className="forbes-text text-gray-600 text-lg">
-                {direction === 'rtl' 
-                  ? 'اكتشف مواضيع جديدة ومثيرة للاهتمام'
-                  : 'Discover new and interesting topics'
-                }
-              </p>
-            </div>
-          )}
-        </div>
+        {activeTab === 'explore' && (
+          <div className="flex-1 px-6">
+            <ExploreSection />
+          </div>
+        )}
       </div>
     </div>
   );

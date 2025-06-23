@@ -35,12 +35,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = false }) =>
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={t('search')}
+            placeholder={direction === 'rtl' ? 'ابحث عن أي شيء...' : 'Search anything...'}
             className={`
-              h-14 bg-white border border-gray-200 rounded-xl shadow-sm
-              focus:border-blue-400 focus:ring-2 focus:ring-blue-100 focus:shadow-md
-              transition-all duration-200 text-base
-              ${direction === 'rtl' ? 'pr-14 pl-20 text-right' : 'pl-14 pr-20'}
+              h-16 bg-white border-2 border-gray-200 rounded-2xl shadow-lg
+              focus:border-amber-400 focus:ring-4 focus:ring-amber-100 focus:shadow-xl
+              transition-all duration-300 text-lg font-light
+              ${direction === 'rtl' ? 'pr-16 pl-24 text-right' : 'pl-16 pr-24'}
+              hover:shadow-xl hover:border-gray-300
             `}
             disabled={isLoading}
           />
@@ -48,15 +49,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = false }) =>
           {/* Search Icon */}
           <Search 
             className={`
-              absolute top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400
-              ${direction === 'rtl' ? 'right-4' : 'left-4'}
+              absolute top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400
+              ${direction === 'rtl' ? 'right-5' : 'left-5'}
             `} 
           />
           
           {/* Action Buttons */}
           <div className={`
-            absolute top-1/2 transform -translate-y-1/2 flex items-center gap-2
-            ${direction === 'rtl' ? 'left-3' : 'right-3'}
+            absolute top-1/2 transform -translate-y-1/2 flex items-center gap-3
+            ${direction === 'rtl' ? 'left-4' : 'right-4'}
           `}>
             {/* Microphone Button */}
             <Button
@@ -64,12 +65,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = false }) =>
               variant="ghost"
               size="sm"
               onClick={toggleMic}
-              className="h-8 w-8 p-0 hover:bg-gray-100 rounded-lg"
+              className="h-10 w-10 p-0 hover:bg-gray-100 rounded-xl transition-all duration-200"
             >
               {isListening ? (
-                <MicOff className="w-4 h-4 text-red-500" />
+                <MicOff className="w-5 h-5 text-red-500" />
               ) : (
-                <Mic className="w-4 h-4 text-gray-500" />
+                <Mic className="w-5 h-5 text-gray-500 hover:text-amber-600" />
               )}
             </Button>
             
@@ -78,13 +79,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, isLoading = false }) =>
               <Button
                 type="submit"
                 disabled={isLoading}
-                size="sm"
-                className="h-8 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs"
+                className="h-10 px-6 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white rounded-xl font-medium transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 {isLoading ? (
-                  <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 ) : (
-                  t('searchButton')
+                  direction === 'rtl' ? 'بحث' : 'Search'
                 )}
               </Button>
             )}
